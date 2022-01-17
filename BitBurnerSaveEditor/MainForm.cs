@@ -102,8 +102,9 @@ namespace BitBurnerSaveEditor
             var ns = System.Globalization.NumberStyles.AllowDecimalPoint | System.Globalization.NumberStyles.AllowExponent | System.Globalization.NumberStyles.AllowTrailingWhite | System.Globalization.NumberStyles.AllowLeadingWhite;
             var txt = sender as TextBox;
             var statName = txt.Tag.ToString();
-
-            if(!double.TryParse(txt.Text, ns, fp,  out double newValue))
+            string textToParse = txt.Text;
+            if (textToParse.ToLower().EndsWith("e")) textToParse += '0';
+            if(!double.TryParse(textToParse, ns, fp,  out double newValue))
             {
                 txt.Focus();
                 MessageBox.Show("Value format is invalid", "Invalid value format");
@@ -193,5 +194,38 @@ namespace BitBurnerSaveEditor
             if (IsUpdating || _SaveFile is null) return;
             _SaveFile.Factions.OnValueChanged();
         }
+
+        private void ButtonMasterExp_Click(object sender, EventArgs e)
+        {
+            if (_SaveFile is null) return;
+            var fp = System.Globalization.CultureInfo.InvariantCulture;
+            var ns = System.Globalization.NumberStyles.AllowDecimalPoint | System.Globalization.NumberStyles.AllowExponent | System.Globalization.NumberStyles.AllowTrailingWhite | System.Globalization.NumberStyles.AllowLeadingWhite;
+
+            if (!double.TryParse(TextMasterExp.Text, ns, fp, out double number)) return; 
+
+            IsUpdating = true;
+            foreach(var txt in new TextBox[] { TextMoney, TextHackExp, TextStrExp, TextDefExp, TextDexExp, TextAgiExp, TextChaExp })
+            {
+                txt.Text = number.ToString("0.000", fp);
+                var propName = txt.Tag.ToString();
+                _SaveFile.Player.UpdateValue(propName, number);
+            }
+
+            IsUpdating = false;
+        } // ButtonMasterExp_Click
+
+        private void ButtonMasterRep_Click(object sender, EventArgs e)
+        {
+            if (_SaveFile is null) return;
+            var fp = System.Globalization.CultureInfo.InvariantCulture;
+            var ns = System.Globalization.NumberStyles.AllowDecimalPoint | System.Globalization.NumberStyles.AllowExponent | System.Globalization.NumberStyles.AllowTrailingWhite | System.Globalization.NumberStyles.AllowLeadingWhite;
+
+            if (!double.TryParse(TextMasterRep.Text, ns, fp, out double number)) return;
+            foreach(var fact in _SaveFile.Factions.Factions)
+            {
+                fact.Reputation = number;
+            } // foreach
+            DgvFactionsView.DataSource = _SaveFile.Factions.Factions;
+        } // ButtonMasterRep_Click
     } // class MainForm
 } // namespace

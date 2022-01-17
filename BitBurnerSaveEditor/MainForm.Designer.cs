@@ -39,6 +39,12 @@ namespace BitBurnerSaveEditor
             this.MenuFileExit = new System.Windows.Forms.ToolStripMenuItem();
             this.TabControlMain = new System.Windows.Forms.TabControl();
             this.TabStats = new System.Windows.Forms.TabPage();
+            this.ButtonMasterRep = new System.Windows.Forms.Button();
+            this.label17 = new System.Windows.Forms.Label();
+            this.TextMasterRep = new System.Windows.Forms.TextBox();
+            this.ButtonMasterExp = new System.Windows.Forms.Button();
+            this.label15 = new System.Windows.Forms.Label();
+            this.TextMasterExp = new System.Windows.Forms.TextBox();
             this.TextMoney = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.TextIntExp = new System.Windows.Forms.TextBox();
@@ -168,6 +174,12 @@ namespace BitBurnerSaveEditor
             // 
             // TabStats
             // 
+            this.TabStats.Controls.Add(this.ButtonMasterRep);
+            this.TabStats.Controls.Add(this.label17);
+            this.TabStats.Controls.Add(this.TextMasterRep);
+            this.TabStats.Controls.Add(this.ButtonMasterExp);
+            this.TabStats.Controls.Add(this.label15);
+            this.TabStats.Controls.Add(this.TextMasterExp);
             this.TabStats.Controls.Add(this.TextMoney);
             this.TabStats.Controls.Add(this.label16);
             this.TabStats.Controls.Add(this.TextIntExp);
@@ -205,6 +217,62 @@ namespace BitBurnerSaveEditor
             this.TabStats.TabIndex = 0;
             this.TabStats.Text = "Stats";
             this.TabStats.UseVisualStyleBackColor = true;
+            // 
+            // ButtonMasterRep
+            // 
+            this.ButtonMasterRep.Location = new System.Drawing.Point(402, 313);
+            this.ButtonMasterRep.Name = "ButtonMasterRep";
+            this.ButtonMasterRep.Size = new System.Drawing.Size(75, 24);
+            this.ButtonMasterRep.TabIndex = 36;
+            this.ButtonMasterRep.Text = "SET";
+            this.ButtonMasterRep.UseVisualStyleBackColor = true;
+            this.ButtonMasterRep.Click += new System.EventHandler(this.ButtonMasterRep_Click);
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(296, 296);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(74, 15);
+            this.label17.TabIndex = 35;
+            this.label17.Text = "MASTER REP";
+            // 
+            // TextMasterRep
+            // 
+            this.TextMasterRep.Location = new System.Drawing.Point(296, 314);
+            this.TextMasterRep.Name = "TextMasterRep";
+            this.TextMasterRep.Size = new System.Drawing.Size(100, 23);
+            this.TextMasterRep.TabIndex = 34;
+            this.TextMasterRep.Tag = "intelligence_exp";
+            this.TextMasterRep.Text = "1E12";
+            // 
+            // ButtonMasterExp
+            // 
+            this.ButtonMasterExp.Location = new System.Drawing.Point(402, 253);
+            this.ButtonMasterExp.Name = "ButtonMasterExp";
+            this.ButtonMasterExp.Size = new System.Drawing.Size(75, 24);
+            this.ButtonMasterExp.TabIndex = 33;
+            this.ButtonMasterExp.Text = "SET";
+            this.ButtonMasterExp.UseVisualStyleBackColor = true;
+            this.ButtonMasterExp.Click += new System.EventHandler(this.ButtonMasterExp_Click);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(296, 236);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(74, 15);
+            this.label15.TabIndex = 32;
+            this.label15.Text = "MASTER EXP";
+            // 
+            // TextMasterExp
+            // 
+            this.TextMasterExp.Location = new System.Drawing.Point(296, 254);
+            this.TextMasterExp.Name = "TextMasterExp";
+            this.TextMasterExp.Size = new System.Drawing.Size(100, 23);
+            this.TextMasterExp.TabIndex = 31;
+            this.TextMasterExp.Tag = "intelligence_exp";
+            this.TextMasterExp.Text = "1E12";
             // 
             // TextMoney
             // 
@@ -247,7 +315,7 @@ namespace BitBurnerSaveEditor
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(417, 67);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(49, 15);
+            this.label13.Size = new System.Drawing.Size(48, 15);
             this.label13.TabIndex = 25;
             this.label13.Text = "INT EXP";
             // 
@@ -256,7 +324,7 @@ namespace BitBurnerSaveEditor
             this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(296, 67);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(26, 15);
+            this.label14.Size = new System.Drawing.Size(25, 15);
             this.label14.TabIndex = 24;
             this.label14.Text = "INT";
             // 
@@ -427,7 +495,7 @@ namespace BitBurnerSaveEditor
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(140, 67);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(50, 15);
+            this.label3.Size = new System.Drawing.Size(49, 15);
             this.label3.TabIndex = 5;
             this.label3.Text = "STR EXP";
             // 
@@ -436,7 +504,7 @@ namespace BitBurnerSaveEditor
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(19, 67);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(27, 15);
+            this.label4.Size = new System.Drawing.Size(26, 15);
             this.label4.TabIndex = 4;
             this.label4.Text = "STR";
             // 
@@ -654,5 +722,11 @@ namespace BitBurnerSaveEditor
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnFavor;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnInvited;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnBanned;
+        private System.Windows.Forms.Button ButtonMasterRep;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TextBox TextMasterRep;
+        private System.Windows.Forms.Button ButtonMasterExp;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox TextMasterExp;
     }
 }
