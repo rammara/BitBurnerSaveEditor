@@ -39,6 +39,10 @@ namespace BitBurnerSaveEditor
             this.MenuFileExit = new System.Windows.Forms.ToolStripMenuItem();
             this.TabControlMain = new System.Windows.Forms.TabControl();
             this.TabStats = new System.Windows.Forms.TabPage();
+            this.Check4STixApi = new System.Windows.Forms.CheckBox();
+            this.Check4SData = new System.Windows.Forms.CheckBox();
+            this.CheckTixApi = new System.Windows.Forms.CheckBox();
+            this.CheckWSEaccount = new System.Windows.Forms.CheckBox();
             this.ButtonMasterRep = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
             this.TextMasterRep = new System.Windows.Forms.TextBox();
@@ -83,6 +87,16 @@ namespace BitBurnerSaveEditor
             this.ColumnFavor = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnInvited = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ColumnBanned = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.TabBladeburner = new System.Windows.Forms.TabPage();
+            this.DgvBBSkills = new System.Windows.Forms.DataGridView();
+            this.ColumnBBSkillName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnBBPoints = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TextBBSkillPoints = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.TextBBStamina = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.TextBBRank = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
             this.TabRawView = new System.Windows.Forms.TabPage();
             this.TextRaw = new System.Windows.Forms.TextBox();
             this.MenuStripMain.SuspendLayout();
@@ -90,6 +104,8 @@ namespace BitBurnerSaveEditor
             this.TabStats.SuspendLayout();
             this.TabFactions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DgvFactionsView)).BeginInit();
+            this.TabBladeburner.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DgvBBSkills)).BeginInit();
             this.TabRawView.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -164,6 +180,7 @@ namespace BitBurnerSaveEditor
             // 
             this.TabControlMain.Controls.Add(this.TabStats);
             this.TabControlMain.Controls.Add(this.TabFactions);
+            this.TabControlMain.Controls.Add(this.TabBladeburner);
             this.TabControlMain.Controls.Add(this.TabRawView);
             this.TabControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TabControlMain.Location = new System.Drawing.Point(0, 24);
@@ -174,6 +191,10 @@ namespace BitBurnerSaveEditor
             // 
             // TabStats
             // 
+            this.TabStats.Controls.Add(this.Check4STixApi);
+            this.TabStats.Controls.Add(this.Check4SData);
+            this.TabStats.Controls.Add(this.CheckTixApi);
+            this.TabStats.Controls.Add(this.CheckWSEaccount);
             this.TabStats.Controls.Add(this.ButtonMasterRep);
             this.TabStats.Controls.Add(this.label17);
             this.TabStats.Controls.Add(this.TextMasterRep);
@@ -217,6 +238,54 @@ namespace BitBurnerSaveEditor
             this.TabStats.TabIndex = 0;
             this.TabStats.Text = "Stats";
             this.TabStats.UseVisualStyleBackColor = true;
+            // 
+            // Check4STixApi
+            // 
+            this.Check4STixApi.AutoSize = true;
+            this.Check4STixApi.Location = new System.Drawing.Point(296, 200);
+            this.Check4STixApi.Name = "Check4STixApi";
+            this.Check4STixApi.Size = new System.Drawing.Size(164, 19);
+            this.Check4STixApi.TabIndex = 40;
+            this.Check4STixApi.Tag = "has4SDataTixApi";
+            this.Check4STixApi.Text = "Has 4S Data Tix API access";
+            this.Check4STixApi.UseVisualStyleBackColor = true;
+            this.Check4STixApi.CheckedChanged += new System.EventHandler(this.CheckBoxStockExch_CheckedChanged);
+            // 
+            // Check4SData
+            // 
+            this.Check4SData.AutoSize = true;
+            this.Check4SData.Location = new System.Drawing.Point(296, 174);
+            this.Check4SData.Name = "Check4SData";
+            this.Check4SData.Size = new System.Drawing.Size(87, 19);
+            this.Check4SData.TabIndex = 39;
+            this.Check4SData.Tag = "has4SData";
+            this.Check4SData.Text = "Has 4S data";
+            this.Check4SData.UseVisualStyleBackColor = true;
+            this.Check4SData.CheckedChanged += new System.EventHandler(this.CheckBoxStockExch_CheckedChanged);
+            // 
+            // CheckTixApi
+            // 
+            this.CheckTixApi.AutoSize = true;
+            this.CheckTixApi.Location = new System.Drawing.Point(296, 148);
+            this.CheckTixApi.Name = "CheckTixApi";
+            this.CheckTixApi.Size = new System.Drawing.Size(122, 19);
+            this.CheckTixApi.TabIndex = 38;
+            this.CheckTixApi.Tag = "hasTixApiAccess";
+            this.CheckTixApi.Text = "Has Tix API access";
+            this.CheckTixApi.UseVisualStyleBackColor = true;
+            this.CheckTixApi.CheckedChanged += new System.EventHandler(this.CheckBoxStockExch_CheckedChanged);
+            // 
+            // CheckWSEaccount
+            // 
+            this.CheckWSEaccount.AutoSize = true;
+            this.CheckWSEaccount.Location = new System.Drawing.Point(296, 122);
+            this.CheckWSEaccount.Name = "CheckWSEaccount";
+            this.CheckWSEaccount.Size = new System.Drawing.Size(118, 19);
+            this.CheckWSEaccount.TabIndex = 37;
+            this.CheckWSEaccount.Tag = "hasWseAccount";
+            this.CheckWSEaccount.Text = "Has WSE account";
+            this.CheckWSEaccount.UseVisualStyleBackColor = true;
+            this.CheckWSEaccount.CheckedChanged += new System.EventHandler(this.CheckBoxStockExch_CheckedChanged);
             // 
             // ButtonMasterRep
             // 
@@ -557,6 +626,9 @@ namespace BitBurnerSaveEditor
             // 
             // DgvFactionsView
             // 
+            this.DgvFactionsView.AllowUserToAddRows = false;
+            this.DgvFactionsView.AllowUserToDeleteRows = false;
+            this.DgvFactionsView.AllowUserToResizeRows = false;
             this.DgvFactionsView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DgvFactionsView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnFactionName,
@@ -624,6 +696,112 @@ namespace BitBurnerSaveEditor
             this.ColumnBanned.Name = "ColumnBanned";
             this.ColumnBanned.TrueValue = "true";
             // 
+            // TabBladeburner
+            // 
+            this.TabBladeburner.Controls.Add(this.DgvBBSkills);
+            this.TabBladeburner.Controls.Add(this.TextBBSkillPoints);
+            this.TabBladeburner.Controls.Add(this.label20);
+            this.TabBladeburner.Controls.Add(this.TextBBStamina);
+            this.TabBladeburner.Controls.Add(this.label19);
+            this.TabBladeburner.Controls.Add(this.TextBBRank);
+            this.TabBladeburner.Controls.Add(this.label18);
+            this.TabBladeburner.Location = new System.Drawing.Point(4, 24);
+            this.TabBladeburner.Name = "TabBladeburner";
+            this.TabBladeburner.Padding = new System.Windows.Forms.Padding(3);
+            this.TabBladeburner.Size = new System.Drawing.Size(839, 443);
+            this.TabBladeburner.TabIndex = 3;
+            this.TabBladeburner.Text = "Bladeburner";
+            this.TabBladeburner.UseVisualStyleBackColor = true;
+            // 
+            // DgvBBSkills
+            // 
+            this.DgvBBSkills.AllowUserToAddRows = false;
+            this.DgvBBSkills.AllowUserToDeleteRows = false;
+            this.DgvBBSkills.AllowUserToResizeRows = false;
+            this.DgvBBSkills.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.DgvBBSkills.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DgvBBSkills.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ColumnBBSkillName,
+            this.ColumnBBPoints});
+            this.DgvBBSkills.Location = new System.Drawing.Point(229, 57);
+            this.DgvBBSkills.Name = "DgvBBSkills";
+            this.DgvBBSkills.RowHeadersVisible = false;
+            this.DgvBBSkills.RowTemplate.Height = 25;
+            this.DgvBBSkills.Size = new System.Drawing.Size(590, 378);
+            this.DgvBBSkills.TabIndex = 9;
+            // 
+            // ColumnBBSkillName
+            // 
+            this.ColumnBBSkillName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnBBSkillName.DataPropertyName = "Name";
+            this.ColumnBBSkillName.HeaderText = "Skill";
+            this.ColumnBBSkillName.Name = "ColumnBBSkillName";
+            this.ColumnBBSkillName.ReadOnly = true;
+            // 
+            // ColumnBBPoints
+            // 
+            this.ColumnBBPoints.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.ColumnBBPoints.DataPropertyName = "Points";
+            this.ColumnBBPoints.HeaderText = "Points";
+            this.ColumnBBPoints.Name = "ColumnBBPoints";
+            this.ColumnBBPoints.Width = 65;
+            // 
+            // TextBBSkillPoints
+            // 
+            this.TextBBSkillPoints.Location = new System.Drawing.Point(24, 152);
+            this.TextBBSkillPoints.Name = "TextBBSkillPoints";
+            this.TextBBSkillPoints.Size = new System.Drawing.Size(100, 23);
+            this.TextBBSkillPoints.TabIndex = 8;
+            this.TextBBSkillPoints.Tag = "stamina";
+            this.TextBBSkillPoints.TextChanged += new System.EventHandler(this.BBTextBoxSkillPoints_TextChanged);
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(24, 134);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(64, 15);
+            this.label20.TabIndex = 7;
+            this.label20.Text = "Skill Points";
+            // 
+            // TextBBStamina
+            // 
+            this.TextBBStamina.Location = new System.Drawing.Point(24, 90);
+            this.TextBBStamina.Name = "TextBBStamina";
+            this.TextBBStamina.Size = new System.Drawing.Size(100, 23);
+            this.TextBBStamina.TabIndex = 6;
+            this.TextBBStamina.Tag = "stamina";
+            this.TextBBStamina.TextChanged += new System.EventHandler(this.BBTextBoxStamina_TextChanged);
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(24, 72);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(50, 15);
+            this.label19.TabIndex = 5;
+            this.label19.Text = "Stamina";
+            // 
+            // TextBBRank
+            // 
+            this.TextBBRank.Location = new System.Drawing.Point(24, 33);
+            this.TextBBRank.Name = "TextBBRank";
+            this.TextBBRank.Size = new System.Drawing.Size(100, 23);
+            this.TextBBRank.TabIndex = 4;
+            this.TextBBRank.Tag = "rank";
+            this.TextBBRank.TextChanged += new System.EventHandler(this.BBTextBoxRank_TextChanged);
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(24, 15);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(33, 15);
+            this.label18.TabIndex = 3;
+            this.label18.Text = "Rank";
+            // 
             // TabRawView
             // 
             this.TabRawView.Controls.Add(this.TextRaw);
@@ -663,6 +841,9 @@ namespace BitBurnerSaveEditor
             this.TabStats.PerformLayout();
             this.TabFactions.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DgvFactionsView)).EndInit();
+            this.TabBladeburner.ResumeLayout(false);
+            this.TabBladeburner.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DgvBBSkills)).EndInit();
             this.TabRawView.ResumeLayout(false);
             this.TabRawView.PerformLayout();
             this.ResumeLayout(false);
@@ -728,5 +909,19 @@ namespace BitBurnerSaveEditor
         private System.Windows.Forms.Button ButtonMasterExp;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TextBox TextMasterExp;
+        private System.Windows.Forms.TabPage TabBladeburner;
+        private System.Windows.Forms.TextBox TextBBSkillPoints;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox TextBBStamina;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.TextBox TextBBRank;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.DataGridView DgvBBSkills;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnBBSkillName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnBBPoints;
+        private System.Windows.Forms.CheckBox Check4STixApi;
+        private System.Windows.Forms.CheckBox Check4SData;
+        private System.Windows.Forms.CheckBox CheckTixApi;
+        private System.Windows.Forms.CheckBox CheckWSEaccount;
     }
 }

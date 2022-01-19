@@ -89,9 +89,26 @@ namespace BitBurnerSaveEditor
             TextChaExp.Text = _SaveFile.Player.CharismaExp.ToString("0.000", fp);
             TextIntExp.Text = _SaveFile.Player.IntelligenceExp.ToString("0.000", fp);
 
+            CheckWSEaccount.Checked = _SaveFile.Player.HasWseAccount;
+            CheckTixApi.Checked = _SaveFile.Player.HasTixApiAccess;
+            Check4SData.Checked = _SaveFile.Player.Has4SData;
+            Check4STixApi.Checked = _SaveFile.Player.Has4SDataTixApi;
+
             DgvFactionsView.AutoGenerateColumns = false;
+            DgvBBSkills.AutoGenerateColumns = false;
             DgvFactionsView.DataSource = _SaveFile.Factions.Factions;
-            
+            if (_SaveFile.Player.BladeBurnerData is not null)
+            {
+                if (!TabControlMain.TabPages.Contains(TabBladeburner)) TabControlMain.TabPages.Insert(2, TabBladeburner);
+                TextBBRank.Text = _SaveFile.Player.BladeBurnerData.Rank.ToString("0.000", fp);
+                TextBBStamina.Text = _SaveFile.Player.BladeBurnerData.Stamina.ToString("0.000", fp);
+                TextBBSkillPoints.Text = _SaveFile.Player.BladeBurnerData.SkillPoints.ToString("0", fp);
+                DgvBBSkills.DataSource = _SaveFile.Player.BladeBurnerData.Skills; 
+            }
+            else
+            {
+                TabControlMain.TabPages.Remove(TabBladeburner);
+            }
             IsUpdating = false;
         } // RefreshInterfaceData
 
@@ -195,6 +212,74 @@ namespace BitBurnerSaveEditor
             _SaveFile.Factions.OnValueChanged();
         }
 
+
+       
+        private void BBTextBoxRank_TextChanged(object sender, EventArgs e)
+        {
+            if (IsUpdating) return;
+
+            var fp = System.Globalization.CultureInfo.InvariantCulture;
+            var ns = System.Globalization.NumberStyles.AllowDecimalPoint | System.Globalization.NumberStyles.AllowExponent | System.Globalization.NumberStyles.AllowTrailingWhite | System.Globalization.NumberStyles.AllowLeadingWhite;
+            var txt = sender as TextBox;
+
+            string textToParse = txt.Text;
+            if (textToParse.ToLower().EndsWith("e")) textToParse += '0';
+            if (!double.TryParse(textToParse, ns, fp, out double newValue))
+            {
+                txt.Focus();
+                MessageBox.Show("Value format is invalid", "Invalid value format");
+                return;
+            }
+
+            _SaveFile.Player.BladeBurnerData.Rank = newValue;
+        } // BBTextBoxRank_TextChanged
+
+        private void BBTextBoxStamina_TextChanged(object sender, EventArgs e)
+        {
+            if (IsUpdating) return;
+
+            var fp = System.Globalization.CultureInfo.InvariantCulture;
+            var ns = System.Globalization.NumberStyles.AllowDecimalPoint | System.Globalization.NumberStyles.AllowExponent | System.Globalization.NumberStyles.AllowTrailingWhite | System.Globalization.NumberStyles.AllowLeadingWhite;
+            var txt = sender as TextBox;
+
+            string textToParse = txt.Text;
+            if (textToParse.ToLower().EndsWith("e")) textToParse += '0';
+            if (!double.TryParse(textToParse, ns, fp, out double newValue))
+            {
+                txt.Focus();
+                MessageBox.Show("Value format is invalid", "Invalid value format");
+                return;
+            }
+
+            _SaveFile.Player.BladeBurnerData.Stamina = newValue;
+        } // BBTextBoxStamina_TextChanged
+
+        private void BBTextBoxSkillPoints_TextChanged(object sender, EventArgs e)
+        {
+            if (IsUpdating) return;
+
+            var fp = System.Globalization.CultureInfo.InvariantCulture;
+            var ns = System.Globalization.NumberStyles.AllowTrailingWhite | System.Globalization.NumberStyles.AllowLeadingWhite;
+            var txt = sender as TextBox;
+
+            string textToParse = txt.Text;
+            if (!int.TryParse(textToParse, ns, fp, out int newValue))
+            {
+                txt.Focus();
+                MessageBox.Show("Value format is invalid", "Invalid value format");
+                return;
+            }
+
+            _SaveFile.Player.BladeBurnerData.SkillPoints = newValue;
+        } // BBTextBoxSkillPoints_TextChanged
+
+
+        private void CheckBoxStockExch_CheckedChanged(object sender, EventArgs e)
+        {
+            if (IsUpdating) return;
+
+        } // CheckBoxStockExch_CheckedChanged
+
         private void ButtonMasterExp_Click(object sender, EventArgs e)
         {
             if (_SaveFile is null) return;
@@ -221,11 +306,14 @@ namespace BitBurnerSaveEditor
             var ns = System.Globalization.NumberStyles.AllowDecimalPoint | System.Globalization.NumberStyles.AllowExponent | System.Globalization.NumberStyles.AllowTrailingWhite | System.Globalization.NumberStyles.AllowLeadingWhite;
 
             if (!double.TryParse(TextMasterRep.Text, ns, fp, out double number)) return;
+            IsUpdating = true;
             foreach(var fact in _SaveFile.Factions.Factions)
             {
                 fact.Reputation = number;
             } // foreach
             DgvFactionsView.DataSource = _SaveFile.Factions.Factions;
         } // ButtonMasterRep_Click
+
+    
     } // class MainForm
 } // namespace

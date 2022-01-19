@@ -133,7 +133,7 @@ namespace BitBurnerSaveEditor
             HasTixApiAccess = Convert.ToBoolean(data["hasTixApiAccess"]);
             Has4SData = Convert.ToBoolean(data["has4SData"]);
             Has4SDataTixApi = Convert.ToBoolean(data["has4SDataTixApi"]);
-            if (data["bladeburner"] is not null)
+            if (data["bladeburner"] is JObject bb && bb.ContainsKey("data"))
             {
                 var bbObj = (JObject)data["bladeburner"]["data"];
                 BladeBurnerData = new(bbObj);
@@ -219,16 +219,108 @@ namespace BitBurnerSaveEditor
         public event PropertyChangedEventHandler PropertyChanged;
     } // class FactionDataObject
 
-    public class BladeBurnerInfo
+    public class BladeBurnerInfo : INotifyPropertyChanged
     {
+        public string[] KnownSkills = new string[] 
+        {
+            "Blade's Intuition",
+            "Cloak",
+            "Cyber's Edge",
+            "Datamancer",
+            "Digital Observer",
+            "Evasive System",
+            "Hands of Midas",
+            "Hyperdrive",
+            "Overclock",
+            "Reaper",
+            "Short-Circuit",
+            "Tracer"
+        };
+        private double _stamina;
+        private double _maxStamina;
+        private double _rank;
+        private double _maxRank;
+        private int _skillPoints;
+        private int _totalSkillPoints;
+        private JObject _obj;
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            this.PropertyChanged?.Invoke(this, new(propertyName));
+        } // OnPropertyChanged
+
+        public BindingList<BBSkillInfo> Skills { get; protected set; } = new();
+
         public BladeBurnerInfo(JObject bbObject)
         {
+            _obj = bbObject;
             Stamina = Convert.ToDouble(bbObject["stamina"]);
             Rank = Convert.ToDouble(bbObject["rank"]);
-            SkillPoints = Convert.ToInt32(bbObject["skillPoints"]);
-        }
-        public double Stamina { get; set; }
-        public double Rank { get; set; }
-        public int SkillPoints { get; set; }
+            _skillPoints = Convert.ToInt32(bbObject["skillPoints"]);
+            var skills = (JObject)bbObject["skills"];
+            _totalSkillPoints = Convert.ToInt32(bbObject["totalSkillPoints"]);
+            foreach(JProperty child in skills.Children())
+            {
+                int currentPoints = Convert.ToInt32(child.Value);
+                Skills.Add(new() { Name = child.Name, Points = currentPoints });
+            }  // foreach         
+        } // BladeBurnerInfo ctor
+        public int TotalSkillPoints => _totalSkillPoints;
+        
+        public double Stamina
+        {
+            get => _stamina; 
+            set
+            {
+                _stamina = value;
+                _obj["stamina"] = value;
+                if (_maxStamina < _stamina)
+                {
+                    _maxStamina = _stamina;
+                    _obj["maxStamina"] = _maxStamina;
+                }
+            }
+        } // Stamina
+
+        public double Rank
+        {
+            get => _rank;
+            set
+            {
+                _rank = value;
+                _obj["rank"] = value;
+                if (_maxRank < _rank)
+                {
+                    _maxRank = _rank;
+                    _obj["maxRank"] = _maxRank;
+                }
+            }
+        } // Rank
+
+        public int SkillPoints
+        {
+            get => _skillPoints;
+            set
+            {
+                _skillPoints = value;
+                _obj["skillPoints"] = value;
+                _totalSkillPoints = CountTotalSkillPoints();
+                _obj["totalSkillPoints"] = _totalSkillPoints;
+            }
+        } // SkillPoints
+        protected int CountTotalSkillPoints()
+        {
+            var sum = Skills.Sum(elem => elem.Points);
+            return sum + _skillPoints;
+        } // CountTotalSkillPoints
+        protected double MaxStamina { get; set; }
+        protected double MaxRank { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
+    } // class BladeBurnerInfo
+
+    public class BBSkillInfo
+    {
+        public string Name { get; set; }
+        public int Points { get; set; }
     }
 } // namespace
