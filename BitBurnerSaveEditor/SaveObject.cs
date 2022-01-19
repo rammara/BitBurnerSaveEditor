@@ -20,7 +20,6 @@ namespace BitBurnerSaveEditor
         }
         protected JObject _obj;
         private readonly JsonSerializer jd;
-        JsonSerializerSettings settings = new();
         
         public string RawData { get; protected set; }
         public SaveObjectBase(string content)
@@ -87,7 +86,6 @@ namespace BitBurnerSaveEditor
         public double Charisma { get; set; }
         public double Intelligence { get; set; }
         public double Money { get; set; }
-
         public double HackingExp { get; set; }
         public double StengthExp { get; set; }
         public double DefenseExp { get; set; }
@@ -95,6 +93,11 @@ namespace BitBurnerSaveEditor
         public double AgilityExp { get; set; }
         public double CharismaExp { get; set; }
         public double IntelligenceExp { get; set; }
+        public bool HasWseAccount { get; set; } // hasWseAccount
+        public bool HasTixApiAccess { get; set; } // hasTixApiAccess
+        public bool Has4SData { get; set; } // has4SData
+        public bool Has4SDataTixApi { get; set; }// has4SDataTixApi
+        public BladeBurnerInfo BladeBurnerData {get; protected set;}
         public PlayerObject(string content) : base(content)
         {
             SetPropertyValues();
@@ -126,6 +129,15 @@ namespace BitBurnerSaveEditor
             AgilityExp = Convert.ToDouble(data["agility_exp"]);
             CharismaExp = Convert.ToDouble(data["charisma_exp"]);
             IntelligenceExp = Convert.ToDouble(data["intelligence_exp"]);
+            HasWseAccount = Convert.ToBoolean(data["hasWseAccount"]);
+            HasTixApiAccess = Convert.ToBoolean(data["hasTixApiAccess"]);
+            Has4SData = Convert.ToBoolean(data["has4SData"]);
+            Has4SDataTixApi = Convert.ToBoolean(data["has4SDataTixApi"]);
+            if (data["bladeburner"] is not null)
+            {
+                var bbObj = (JObject)data["bladeburner"]["data"];
+                BladeBurnerData = new(bbObj);
+            }
         }
     } // class PlayerObject
 
@@ -206,4 +218,17 @@ namespace BitBurnerSaveEditor
 
         public event PropertyChangedEventHandler PropertyChanged;
     } // class FactionDataObject
+
+    public class BladeBurnerInfo
+    {
+        public BladeBurnerInfo(JObject bbObject)
+        {
+            Stamina = Convert.ToDouble(bbObject["stamina"]);
+            Rank = Convert.ToDouble(bbObject["rank"]);
+            SkillPoints = Convert.ToInt32(bbObject["skillPoints"]);
+        }
+        public double Stamina { get; set; }
+        public double Rank { get; set; }
+        public int SkillPoints { get; set; }
+    }
 } // namespace
