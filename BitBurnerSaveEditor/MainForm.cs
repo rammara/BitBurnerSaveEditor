@@ -15,6 +15,7 @@ namespace BitBurnerSaveEditor
 {
     public partial class MainForm : Form
     {
+        private static readonly System.Globalization.CultureInfo _fp = System.Globalization.CultureInfo.InvariantCulture;
         private SaveObject _SaveFile;
         private string _OpenedFile;
         public MainForm()
@@ -58,7 +59,6 @@ namespace BitBurnerSaveEditor
         bool IsUpdating = false;
         private void RefreshInterfaceData()
         {
-            var fp = System.Globalization.CultureInfo.InvariantCulture;
             IsUpdating = true;
             if (_SaveFile is null)
             {
@@ -72,22 +72,22 @@ namespace BitBurnerSaveEditor
                 return;
             }
             
-            TextMoney.Text = _SaveFile.Player.Money.ToString("0.000", fp);
-            TextHack.Text = _SaveFile.Player.Hacking.ToString("0", fp);
-            TextStr.Text = _SaveFile.Player.Strength.ToString("0", fp);
-            TextDef.Text = _SaveFile.Player.Defense.ToString("0", fp);
-            TextDex.Text = _SaveFile.Player.Dexterity.ToString("0", fp);
-            TextAgi.Text = _SaveFile.Player.Agility.ToString("0", fp);
-            TextCha.Text = _SaveFile.Player.Charisma.ToString("0", fp);
-            TextInt.Text = _SaveFile.Player.Intelligence.ToString("0", fp);
+            TextMoney.Text = _SaveFile.Player.Money.ToString("0.000", _fp);
+            TextHack.Text = _SaveFile.Player.Hacking.ToString("0", _fp);
+            TextStr.Text = _SaveFile.Player.Strength.ToString("0", _fp);
+            TextDef.Text = _SaveFile.Player.Defense.ToString("0", _fp);
+            TextDex.Text = _SaveFile.Player.Dexterity.ToString("0", _fp);
+            TextAgi.Text = _SaveFile.Player.Agility.ToString("0", _fp);
+            TextCha.Text = _SaveFile.Player.Charisma.ToString("0", _fp);
+            TextInt.Text = _SaveFile.Player.Intelligence.ToString("0", _fp);
 
-            TextHackExp.Text = _SaveFile.Player.HackingExp.ToString("0.000", fp);
-            TextStrExp.Text = _SaveFile.Player.StengthExp.ToString("0.000", fp);
-            TextDefExp.Text = _SaveFile.Player.DefenseExp.ToString("0.000", fp);
-            TextDexExp.Text = _SaveFile.Player.DexterityExp.ToString("0.000", fp);
-            TextAgiExp.Text = _SaveFile.Player.AgilityExp.ToString("0.000", fp);
-            TextChaExp.Text = _SaveFile.Player.CharismaExp.ToString("0.000", fp);
-            TextIntExp.Text = _SaveFile.Player.IntelligenceExp.ToString("0.000", fp);
+            TextHackExp.Text = _SaveFile.Player.HackingExp.ToString("0.000", _fp);
+            TextStrExp.Text = _SaveFile.Player.StengthExp.ToString("0.000", _fp);
+            TextDefExp.Text = _SaveFile.Player.DefenseExp.ToString("0.000", _fp);
+            TextDexExp.Text = _SaveFile.Player.DexterityExp.ToString("0.000", _fp);
+            TextAgiExp.Text = _SaveFile.Player.AgilityExp.ToString("0.000", _fp);
+            TextChaExp.Text = _SaveFile.Player.CharismaExp.ToString("0.000", _fp);
+            TextIntExp.Text = _SaveFile.Player.IntelligenceExp.ToString("0.000", _fp);
 
             CheckWSEaccount.Checked = _SaveFile.Player.HasWseAccount;
             CheckTixApi.Checked = _SaveFile.Player.HasTixApiAccess;
@@ -100,18 +100,31 @@ namespace BitBurnerSaveEditor
             if (_SaveFile.Player.BladeBurnerData is not null)
             {
                 if (!TabControlMain.TabPages.Contains(TabBladeburner)) TabControlMain.TabPages.Insert(2, TabBladeburner);
-                TextBBRank.Text = _SaveFile.Player.BladeBurnerData.Rank.ToString("0.000", fp);
-                TextBBStamina.Text = _SaveFile.Player.BladeBurnerData.Stamina.ToString("0.000", fp);
-                TextBBSkillPoints.Text = _SaveFile.Player.BladeBurnerData.SkillPoints.ToString("0", fp);
-                DgvBBSkills.DataSource = _SaveFile.Player.BladeBurnerData.Skills; 
+                TextBBRank.Text = _SaveFile.Player.BladeBurnerData.Rank.ToString("0.000", _fp);
+                TextBBStamina.Text = _SaveFile.Player.BladeBurnerData.Stamina.ToString("0.000", _fp);
+                TextBBSkillPoints.Text = _SaveFile.Player.BladeBurnerData.SkillPoints.ToString("0", _fp);
+                DgvBBSkills.DataSource = _SaveFile.Player.BladeBurnerData.Skills;
+                ComboBBKnownSkills.Items.AddRange(_SaveFile.Player.BladeBurnerData.MissingSkills.ToArray());
+                BBUpdateReadOnlyValues();
+                _SaveFile.Player.BladeBurnerData.Updated += BB_SkillsUpdated;
             }
             else
             {
                 TabControlMain.TabPages.Remove(TabBladeburner);
             }
+            
             IsUpdating = false;
         } // RefreshInterfaceData
-
+        private void BB_SkillsUpdated(object sender, EventArgs e)
+        {
+            BBUpdateReadOnlyValues();
+        } // BB_SkillsUpdated
+        private void BBUpdateReadOnlyValues()
+        {
+            LabelBBMaxRank.Text = _SaveFile.Player.BladeBurnerData.MaxRank.ToString("0.000", _fp);
+            LabelBBMaxStamina.Text = _SaveFile.Player.BladeBurnerData.MaxStamina.ToString("0.000", _fp);
+            LabelBBTotalSkillPoints.Text = _SaveFile.Player.BladeBurnerData.TotalSkillPoints.ToString("0", _fp);
+        } // BBUpdateReadOnlyValues
         private void Stats_TextChanged(object sender, EventArgs e)
         {
             if (IsUpdating) return;
@@ -127,11 +140,8 @@ namespace BitBurnerSaveEditor
                 MessageBox.Show("Value format is invalid", "Invalid value format");
                 return;
             }
-
             _SaveFile.Player.UpdateValue(statName, newValue);
-
         } // Stats_TextChanged
-
         private void Save(bool DisplayDialog = false)
         {
             if (_SaveFile is null) return;
@@ -155,17 +165,14 @@ namespace BitBurnerSaveEditor
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             } // catch
         } // Save
-
         private void MenuFileSave_Click(object sender, EventArgs e)
         {
             Save();
         } // MenuFileSave_Click
-
         private void MenuFileSaveAs_Click(object sender, EventArgs e)
         {
             Save(DisplayDialog: true);
         } // MenuFileSaveAs_Click
-
         private void MenuFileClose_Click(object sender, EventArgs e)
         {
             if (_SaveFile is not null && _SaveFile.Changed)
@@ -183,12 +190,10 @@ namespace BitBurnerSaveEditor
             _SaveFile = null;
             RefreshInterfaceData(); 
         } // MenuFileClose_Click
-
         private void MenuFileExit_Click(object sender, EventArgs e)
         {
             this.Close();
         } // MenuFileExit_Click
-
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (_SaveFile is not null && _SaveFile.Changed)
@@ -205,15 +210,11 @@ namespace BitBurnerSaveEditor
                 }
             }
         } // MainForm_FormClosing
-
         private void DgvFactionsView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (IsUpdating || _SaveFile is null) return;
             _SaveFile.Factions.OnValueChanged();
-        }
-
-
-       
+        } // DgvFactionsView_CellValueChanged
         private void BBTextBoxRank_TextChanged(object sender, EventArgs e)
         {
             if (IsUpdating) return;
@@ -230,7 +231,6 @@ namespace BitBurnerSaveEditor
                 MessageBox.Show("Value format is invalid", "Invalid value format");
                 return;
             }
-
             _SaveFile.Player.BladeBurnerData.Rank = newValue;
         } // BBTextBoxRank_TextChanged
 
@@ -250,7 +250,6 @@ namespace BitBurnerSaveEditor
                 MessageBox.Show("Value format is invalid", "Invalid value format");
                 return;
             }
-
             _SaveFile.Player.BladeBurnerData.Stamina = newValue;
         } // BBTextBoxStamina_TextChanged
 
@@ -269,17 +268,15 @@ namespace BitBurnerSaveEditor
                 MessageBox.Show("Value format is invalid", "Invalid value format");
                 return;
             }
-
             _SaveFile.Player.BladeBurnerData.SkillPoints = newValue;
         } // BBTextBoxSkillPoints_TextChanged
-
-
         private void CheckBoxStockExch_CheckedChanged(object sender, EventArgs e)
         {
             if (IsUpdating) return;
-
+            var chk = sender as CheckBox;
+            var statName = chk.Tag.ToString();
+            _SaveFile.Player.UpdateValue(statName, chk.Checked);
         } // CheckBoxStockExch_CheckedChanged
-
         private void ButtonMasterExp_Click(object sender, EventArgs e)
         {
             if (_SaveFile is null) return;
@@ -295,7 +292,6 @@ namespace BitBurnerSaveEditor
                 var propName = txt.Tag.ToString();
                 _SaveFile.Player.UpdateValue(propName, number);
             }
-
             IsUpdating = false;
         } // ButtonMasterExp_Click
 
@@ -304,7 +300,6 @@ namespace BitBurnerSaveEditor
             if (_SaveFile is null) return;
             var fp = System.Globalization.CultureInfo.InvariantCulture;
             var ns = System.Globalization.NumberStyles.AllowDecimalPoint | System.Globalization.NumberStyles.AllowExponent | System.Globalization.NumberStyles.AllowTrailingWhite | System.Globalization.NumberStyles.AllowLeadingWhite;
-
             if (!double.TryParse(TextMasterRep.Text, ns, fp, out double number)) return;
             IsUpdating = true;
             foreach(var fact in _SaveFile.Factions.Factions)
@@ -314,6 +309,18 @@ namespace BitBurnerSaveEditor
             DgvFactionsView.DataSource = _SaveFile.Factions.Factions;
         } // ButtonMasterRep_Click
 
-    
+        private void ComboBBKnownSkills_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ButtonBBAddMissingSkill.Enabled = ComboBBKnownSkills.SelectedItem is not null;
+        } // ComboBBKnownSkills_SelectedIndexChanged
+
+        private void ButtonBBAddMissingSkill_Click(object sender, EventArgs e)
+        {
+            var skillName = ComboBBKnownSkills.SelectedItem?.ToString();
+            if (string.IsNullOrEmpty(skillName)) return;
+            _SaveFile.Player.BladeBurnerData.AddMissingSkill(skillName);
+            ComboBBKnownSkills.Items.Clear();
+            ComboBBKnownSkills.Items.AddRange(_SaveFile.Player.BladeBurnerData.MissingSkills.ToArray());
+        } // ButtonBBAddMissingSkill_Click
     } // class MainForm
 } // namespace

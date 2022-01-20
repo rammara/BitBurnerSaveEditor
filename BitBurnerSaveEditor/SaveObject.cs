@@ -110,6 +110,20 @@ namespace BitBurnerSaveEditor
             OnValueChanged();
         } // UpdateValue
 
+        public void UpdateValue(string statName, bool value)
+        {
+            var data = _obj["data"];
+            data[statName] = value;
+            OnValueChanged();
+        } // UpdateValue
+
+        public void BladeBurnerInfo_Updated(object sender, EventArgs e)
+        {
+            var data = _obj["data"];
+            data["bladeburner"] = (sender as BladeBurnerInfo).ObjectNode;
+            OnValueChanged();
+        } // BladeBurnerInfo_Updated
+
         private void SetPropertyValues()
         {
             var data = _obj["data"];
@@ -137,8 +151,9 @@ namespace BitBurnerSaveEditor
             {
                 var bbObj = (JObject)data["bladeburner"]["data"];
                 BladeBurnerData = new(bbObj);
+                BladeBurnerData.Updated += BladeBurnerInfo_Updated;
             }
-        }
+        } // SetPropertyValues
     } // class PlayerObject
 
     public class FactionsObject : SaveObjectBase
@@ -219,7 +234,7 @@ namespace BitBurnerSaveEditor
         public event PropertyChangedEventHandler PropertyChanged;
     } // class FactionDataObject
 
-    public class BladeBurnerInfo : INotifyPropertyChanged
+    public class BladeBurnerInfo 
     {
         public string[] KnownSkills = new string[] 
         {
@@ -242,85 +257,136 @@ namespace BitBurnerSaveEditor
         private double _maxRank;
         private int _skillPoints;
         private int _totalSkillPoints;
-        private JObject _obj;
+        public JObject ObjectNode { get; init; }
+        public JObject SkillNode { get; init; }
+        public List<string> MissingSkills { get; init; } = new();
 
-        private void OnPropertyChanged(string propertyName)
+        private void OnUpdated()
         {
-            this.PropertyChanged?.Invoke(this, new(propertyName));
+            this.Updated?.Invoke(this, new());
         } // OnPropertyChanged
 
+        public void AddMissingSkill(string skillName)
+        {
+            if (SkillNode.ContainsKey(skillName)) return;
+            SkillNode.Add(skillName, 0);
+            var newItem = new BBSkillInfo(skillName, 0);
+            newItem.Updated += SkillUpdated;
+            Skills.Add(newItem);
+            UpdateMissingSkills();
+            OnUpdated();
+        } // AddMissingSkill
         public BindingList<BBSkillInfo> Skills { get; protected set; } = new();
-
+        
+        private void SkillUpdated(object sender, EventArgs e)
+        {
+            var skill = sender as BBSkillInfo;
+            SkillNode[skill.Name] = skill.Points;
+            _totalSkillPoints = CountTotalSkillPoints();
+            ObjectNode["totalSkillPoints"] = _totalSkillPoints;
+            OnUpdated();
+        } // SkillUpdated
+        private void UpdateMissingSkills()
+        {
+            MissingSkills.Clear();
+            foreach (var skill in KnownSkills)
+            {
+                if (!Skills.Any(s => s.Name == skill)) MissingSkills.Add(skill);
+            } // foreach
+        } // UpdateMissingSkills
         public BladeBurnerInfo(JObject bbObject)
         {
-            _obj = bbObject;
+            ObjectNode = bbObject;
             Stamina = Convert.ToDouble(bbObject["stamina"]);
             Rank = Convert.ToDouble(bbObject["rank"]);
             _skillPoints = Convert.ToInt32(bbObject["skillPoints"]);
-            var skills = (JObject)bbObject["skills"];
+            SkillNode = (JObject)bbObject["skills"];
             _totalSkillPoints = Convert.ToInt32(bbObject["totalSkillPoints"]);
-            foreach(JProperty child in skills.Children())
+            foreach(JProperty child in SkillNode.Children())
             {
                 int currentPoints = Convert.ToInt32(child.Value);
-                Skills.Add(new() { Name = child.Name, Points = currentPoints });
-            }  // foreach         
+                BBSkillInfo bsi = new(child.Name, currentPoints);
+                bsi.Updated += SkillUpdated;
+                Skills.Add(bsi);
+            }  // foreach
+            UpdateMissingSkills();
         } // BladeBurnerInfo ctor
-        public int TotalSkillPoints => _totalSkillPoints;
-        
         public double Stamina
         {
             get => _stamina; 
             set
             {
                 _stamina = value;
-                _obj["stamina"] = value;
+                ObjectNode["stamina"] = value;
                 if (_maxStamina < _stamina)
                 {
                     _maxStamina = _stamina;
-                    _obj["maxStamina"] = _maxStamina;
+                    ObjectNode["maxStamina"] = _maxStamina;
+                    OnUpdated();
                 }
-            }
+            } // set
         } // Stamina
-
         public double Rank
         {
             get => _rank;
             set
             {
                 _rank = value;
-                _obj["rank"] = value;
+                ObjectNode["rank"] = value;
                 if (_maxRank < _rank)
                 {
                     _maxRank = _rank;
-                    _obj["maxRank"] = _maxRank;
+                    ObjectNode["maxRank"] = _maxRank;
+                    OnUpdated();
                 }
-            }
+            } // set
         } // Rank
-
         public int SkillPoints
         {
             get => _skillPoints;
             set
             {
                 _skillPoints = value;
-                _obj["skillPoints"] = value;
+                ObjectNode["skillPoints"] = value;
                 _totalSkillPoints = CountTotalSkillPoints();
-                _obj["totalSkillPoints"] = _totalSkillPoints;
-            }
+                ObjectNode["totalSkillPoints"] = _totalSkillPoints;
+                OnUpdated();
+            } // set
         } // SkillPoints
         protected int CountTotalSkillPoints()
         {
             var sum = Skills.Sum(elem => elem.Points);
             return sum + _skillPoints;
         } // CountTotalSkillPoints
-        protected double MaxStamina { get; set; }
-        protected double MaxRank { get; set; }
-        public event PropertyChangedEventHandler PropertyChanged;
+        public double MaxStamina => _maxStamina;
+        public double MaxRank => _maxRank;
+        public int TotalSkillPoints => _totalSkillPoints;
+        public event EventHandler Updated;
     } // class BladeBurnerInfo
 
     public class BBSkillInfo
     {
-        public string Name { get; set; }
-        public int Points { get; set; }
-    }
+        private int _pts;
+        public event EventHandler Updated;
+        public void OnUpdted()
+        {
+            this.Updated?.Invoke(this, new());
+        } // OnUpdated
+        public BBSkillInfo(string name, int points)
+        {
+            Name = name; _pts = points;
+        } // BBSkillInfo ctor
+        public string Name { get; init; }
+        public int Points
+        {
+            get => _pts;
+            set
+            {
+                if (value < 0) value = 0;
+                if (this.Name == "Overclock" && value > 90) value = 90; // Max points for overclock
+                _pts = value;
+                OnUpdted();
+            } // set
+        } // Points
+    } // class BBSkillInfo
 } // namespace

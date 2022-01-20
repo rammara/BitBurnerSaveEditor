@@ -88,6 +88,14 @@ namespace BitBurnerSaveEditor
             this.ColumnInvited = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ColumnBanned = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.TabBladeburner = new System.Windows.Forms.TabPage();
+            this.label24 = new System.Windows.Forms.Label();
+            this.ComboBBKnownSkills = new System.Windows.Forms.ComboBox();
+            this.LabelBBTotalSkillPoints = new System.Windows.Forms.Label();
+            this.LabelBBMaxStamina = new System.Windows.Forms.Label();
+            this.LabelBBMaxRank = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
             this.DgvBBSkills = new System.Windows.Forms.DataGridView();
             this.ColumnBBSkillName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnBBPoints = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -99,6 +107,7 @@ namespace BitBurnerSaveEditor
             this.label18 = new System.Windows.Forms.Label();
             this.TabRawView = new System.Windows.Forms.TabPage();
             this.TextRaw = new System.Windows.Forms.TextBox();
+            this.ButtonBBAddMissingSkill = new System.Windows.Forms.Button();
             this.MenuStripMain.SuspendLayout();
             this.TabControlMain.SuspendLayout();
             this.TabStats.SuspendLayout();
@@ -302,7 +311,7 @@ namespace BitBurnerSaveEditor
             this.label17.AutoSize = true;
             this.label17.Location = new System.Drawing.Point(296, 296);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(74, 15);
+            this.label17.Size = new System.Drawing.Size(75, 15);
             this.label17.TabIndex = 35;
             this.label17.Text = "MASTER REP";
             // 
@@ -330,7 +339,7 @@ namespace BitBurnerSaveEditor
             this.label15.AutoSize = true;
             this.label15.Location = new System.Drawing.Point(296, 236);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(74, 15);
+            this.label15.Size = new System.Drawing.Size(75, 15);
             this.label15.TabIndex = 32;
             this.label15.Text = "MASTER EXP";
             // 
@@ -384,7 +393,7 @@ namespace BitBurnerSaveEditor
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(417, 67);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(48, 15);
+            this.label13.Size = new System.Drawing.Size(49, 15);
             this.label13.TabIndex = 25;
             this.label13.Text = "INT EXP";
             // 
@@ -393,7 +402,7 @@ namespace BitBurnerSaveEditor
             this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(296, 67);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(25, 15);
+            this.label14.Size = new System.Drawing.Size(26, 15);
             this.label14.TabIndex = 24;
             this.label14.Text = "INT";
             // 
@@ -564,7 +573,7 @@ namespace BitBurnerSaveEditor
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(140, 67);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(49, 15);
+            this.label3.Size = new System.Drawing.Size(50, 15);
             this.label3.TabIndex = 5;
             this.label3.Text = "STR EXP";
             // 
@@ -573,7 +582,7 @@ namespace BitBurnerSaveEditor
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(19, 67);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(26, 15);
+            this.label4.Size = new System.Drawing.Size(27, 15);
             this.label4.TabIndex = 4;
             this.label4.Text = "STR";
             // 
@@ -698,6 +707,15 @@ namespace BitBurnerSaveEditor
             // 
             // TabBladeburner
             // 
+            this.TabBladeburner.Controls.Add(this.ButtonBBAddMissingSkill);
+            this.TabBladeburner.Controls.Add(this.label24);
+            this.TabBladeburner.Controls.Add(this.ComboBBKnownSkills);
+            this.TabBladeburner.Controls.Add(this.LabelBBTotalSkillPoints);
+            this.TabBladeburner.Controls.Add(this.LabelBBMaxStamina);
+            this.TabBladeburner.Controls.Add(this.LabelBBMaxRank);
+            this.TabBladeburner.Controls.Add(this.label23);
+            this.TabBladeburner.Controls.Add(this.label22);
+            this.TabBladeburner.Controls.Add(this.label21);
             this.TabBladeburner.Controls.Add(this.DgvBBSkills);
             this.TabBladeburner.Controls.Add(this.TextBBSkillPoints);
             this.TabBladeburner.Controls.Add(this.label20);
@@ -713,6 +731,79 @@ namespace BitBurnerSaveEditor
             this.TabBladeburner.Text = "Bladeburner";
             this.TabBladeburner.UseVisualStyleBackColor = true;
             // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(229, 15);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(55, 15);
+            this.label24.TabIndex = 17;
+            this.label24.Text = "Add skill:";
+            // 
+            // ComboBBKnownSkills
+            // 
+            this.ComboBBKnownSkills.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ComboBBKnownSkills.FormattingEnabled = true;
+            this.ComboBBKnownSkills.Location = new System.Drawing.Point(229, 33);
+            this.ComboBBKnownSkills.Name = "ComboBBKnownSkills";
+            this.ComboBBKnownSkills.Size = new System.Drawing.Size(299, 23);
+            this.ComboBBKnownSkills.TabIndex = 16;
+            this.ComboBBKnownSkills.SelectedIndexChanged += new System.EventHandler(this.ComboBBKnownSkills_SelectedIndexChanged);
+            // 
+            // LabelBBTotalSkillPoints
+            // 
+            this.LabelBBTotalSkillPoints.AutoSize = true;
+            this.LabelBBTotalSkillPoints.Location = new System.Drawing.Point(141, 155);
+            this.LabelBBTotalSkillPoints.Name = "LabelBBTotalSkillPoints";
+            this.LabelBBTotalSkillPoints.Size = new System.Drawing.Size(13, 15);
+            this.LabelBBTotalSkillPoints.TabIndex = 15;
+            this.LabelBBTotalSkillPoints.Text = "0";
+            // 
+            // LabelBBMaxStamina
+            // 
+            this.LabelBBMaxStamina.AutoSize = true;
+            this.LabelBBMaxStamina.Location = new System.Drawing.Point(141, 93);
+            this.LabelBBMaxStamina.Name = "LabelBBMaxStamina";
+            this.LabelBBMaxStamina.Size = new System.Drawing.Size(13, 15);
+            this.LabelBBMaxStamina.TabIndex = 14;
+            this.LabelBBMaxStamina.Text = "0";
+            // 
+            // LabelBBMaxRank
+            // 
+            this.LabelBBMaxRank.AutoSize = true;
+            this.LabelBBMaxRank.Location = new System.Drawing.Point(141, 36);
+            this.LabelBBMaxRank.Name = "LabelBBMaxRank";
+            this.LabelBBMaxRank.Size = new System.Drawing.Size(13, 15);
+            this.LabelBBMaxRank.TabIndex = 13;
+            this.LabelBBMaxRank.Text = "0";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(141, 134);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(37, 15);
+            this.label23.TabIndex = 12;
+            this.label23.Text = "Total:";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(141, 72);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(32, 15);
+            this.label22.TabIndex = 11;
+            this.label22.Text = "Max:";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(141, 15);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(32, 15);
+            this.label21.TabIndex = 10;
+            this.label21.Text = "Max:";
+            // 
             // DgvBBSkills
             // 
             this.DgvBBSkills.AllowUserToAddRows = false;
@@ -725,11 +816,11 @@ namespace BitBurnerSaveEditor
             this.DgvBBSkills.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnBBSkillName,
             this.ColumnBBPoints});
-            this.DgvBBSkills.Location = new System.Drawing.Point(229, 57);
+            this.DgvBBSkills.Location = new System.Drawing.Point(229, 72);
             this.DgvBBSkills.Name = "DgvBBSkills";
             this.DgvBBSkills.RowHeadersVisible = false;
             this.DgvBBSkills.RowTemplate.Height = 25;
-            this.DgvBBSkills.Size = new System.Drawing.Size(590, 378);
+            this.DgvBBSkills.Size = new System.Drawing.Size(590, 363);
             this.DgvBBSkills.TabIndex = 9;
             // 
             // ColumnBBSkillName
@@ -822,6 +913,17 @@ namespace BitBurnerSaveEditor
             this.TextRaw.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.TextRaw.Size = new System.Drawing.Size(839, 443);
             this.TextRaw.TabIndex = 0;
+            // 
+            // ButtonBBAddMissingSkill
+            // 
+            this.ButtonBBAddMissingSkill.Enabled = false;
+            this.ButtonBBAddMissingSkill.Location = new System.Drawing.Point(546, 32);
+            this.ButtonBBAddMissingSkill.Name = "ButtonBBAddMissingSkill";
+            this.ButtonBBAddMissingSkill.Size = new System.Drawing.Size(75, 24);
+            this.ButtonBBAddMissingSkill.TabIndex = 18;
+            this.ButtonBBAddMissingSkill.Text = "Add";
+            this.ButtonBBAddMissingSkill.UseVisualStyleBackColor = true;
+            this.ButtonBBAddMissingSkill.Click += new System.EventHandler(this.ButtonBBAddMissingSkill_Click);
             // 
             // MainForm
             // 
@@ -923,5 +1025,14 @@ namespace BitBurnerSaveEditor
         private System.Windows.Forms.CheckBox Check4SData;
         private System.Windows.Forms.CheckBox CheckTixApi;
         private System.Windows.Forms.CheckBox CheckWSEaccount;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label LabelBBTotalSkillPoints;
+        private System.Windows.Forms.Label LabelBBMaxStamina;
+        private System.Windows.Forms.Label LabelBBMaxRank;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.ComboBox ComboBBKnownSkills;
+        private System.Windows.Forms.Button ButtonBBAddMissingSkill;
     }
 }
