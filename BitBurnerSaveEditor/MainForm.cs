@@ -17,6 +17,7 @@ namespace BitBurnerSaveEditor
     {
         private static readonly System.Globalization.CultureInfo _fp = System.Globalization.CultureInfo.InvariantCulture;
         private SaveObject _SaveFile;
+        private SaveDataTree _Tree;
         private string _OpenedFile;
         public MainForm()
         {
@@ -42,8 +43,10 @@ namespace BitBurnerSaveEditor
                 var decoded = Encoding.UTF8.GetString(decodedBytes);
                 TextRaw.Text = decoded;
                 _SaveFile = new SaveObject(decoded);
+                _Tree = new SaveDataTree(decoded);
                 _SaveFile.Updated += Savefile_Updated;
                 RefreshInterfaceData();
+                PopulateObjectTree();
             }
             catch (Exception ex)
             {
@@ -115,6 +118,35 @@ namespace BitBurnerSaveEditor
             
             IsUpdating = false;
         } // RefreshInterfaceData
+        private void PopulateObjectTree(TreeNode startFrom = null)
+        {
+            bool isroot = false;
+            SaveDataTreeNode _currentObject = null;
+            TreeViewMain.Nodes.Clear();
+            if (startFrom is null)
+            {
+                startFrom = new() { Tag = _Tree, Text = "ROOT" };
+                _currentObject = _Tree.Root;
+                isroot = true;
+            }
+            else if (startFrom.Tag is SaveDataTreeNode objData)
+            {
+                _currentObject = objData;
+            }
+            if (_currentObject is not null)
+            {
+                foreach (var child in _currentObject)
+                {
+                    TreeNode childTN = new() { Tag = child, Text = child.ToString() };
+                    PopulateObjectTree(childTN);
+                    startFrom.Nodes.Add(childTN);
+                } // foreach    
+            }
+            if (isroot)
+            {
+                TreeViewMain.Nodes.Add(startFrom);
+            }
+        }
         private void BB_SkillsUpdated(object sender, EventArgs e)
         {
             BBUpdateReadOnlyValues();

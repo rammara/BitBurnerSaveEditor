@@ -120,7 +120,9 @@ namespace BitBurnerSaveEditor
         public void BladeBurnerInfo_Updated(object sender, EventArgs e)
         {
             var data = _obj["data"];
-            data["bladeburner"] = (sender as BladeBurnerInfo).ObjectNode;
+            var debugOldBBData = data["bladeburner"];
+            var newData = (sender as BladeBurnerInfo).ObjectNode;
+            data["bladeburner"]["data"] = newData;
             OnValueChanged();
         } // BladeBurnerInfo_Updated
 

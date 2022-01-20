@@ -88,6 +88,7 @@ namespace BitBurnerSaveEditor
             this.ColumnInvited = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ColumnBanned = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.TabBladeburner = new System.Windows.Forms.TabPage();
+            this.ButtonBBAddMissingSkill = new System.Windows.Forms.Button();
             this.label24 = new System.Windows.Forms.Label();
             this.ComboBBKnownSkills = new System.Windows.Forms.ComboBox();
             this.LabelBBTotalSkillPoints = new System.Windows.Forms.Label();
@@ -107,7 +108,8 @@ namespace BitBurnerSaveEditor
             this.label18 = new System.Windows.Forms.Label();
             this.TabRawView = new System.Windows.Forms.TabPage();
             this.TextRaw = new System.Windows.Forms.TextBox();
-            this.ButtonBBAddMissingSkill = new System.Windows.Forms.Button();
+            this.TabTree = new System.Windows.Forms.TabPage();
+            this.TreeViewMain = new System.Windows.Forms.TreeView();
             this.MenuStripMain.SuspendLayout();
             this.TabControlMain.SuspendLayout();
             this.TabStats.SuspendLayout();
@@ -116,6 +118,7 @@ namespace BitBurnerSaveEditor
             this.TabBladeburner.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DgvBBSkills)).BeginInit();
             this.TabRawView.SuspendLayout();
+            this.TabTree.SuspendLayout();
             this.SuspendLayout();
             // 
             // MenuStripMain
@@ -191,6 +194,7 @@ namespace BitBurnerSaveEditor
             this.TabControlMain.Controls.Add(this.TabFactions);
             this.TabControlMain.Controls.Add(this.TabBladeburner);
             this.TabControlMain.Controls.Add(this.TabRawView);
+            this.TabControlMain.Controls.Add(this.TabTree);
             this.TabControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TabControlMain.Location = new System.Drawing.Point(0, 24);
             this.TabControlMain.Name = "TabControlMain";
@@ -731,6 +735,17 @@ namespace BitBurnerSaveEditor
             this.TabBladeburner.Text = "Bladeburner";
             this.TabBladeburner.UseVisualStyleBackColor = true;
             // 
+            // ButtonBBAddMissingSkill
+            // 
+            this.ButtonBBAddMissingSkill.Enabled = false;
+            this.ButtonBBAddMissingSkill.Location = new System.Drawing.Point(546, 32);
+            this.ButtonBBAddMissingSkill.Name = "ButtonBBAddMissingSkill";
+            this.ButtonBBAddMissingSkill.Size = new System.Drawing.Size(75, 24);
+            this.ButtonBBAddMissingSkill.TabIndex = 18;
+            this.ButtonBBAddMissingSkill.Text = "Add";
+            this.ButtonBBAddMissingSkill.UseVisualStyleBackColor = true;
+            this.ButtonBBAddMissingSkill.Click += new System.EventHandler(this.ButtonBBAddMissingSkill_Click);
+            // 
             // label24
             // 
             this.label24.AutoSize = true;
@@ -914,16 +929,24 @@ namespace BitBurnerSaveEditor
             this.TextRaw.Size = new System.Drawing.Size(839, 443);
             this.TextRaw.TabIndex = 0;
             // 
-            // ButtonBBAddMissingSkill
+            // TabTree
             // 
-            this.ButtonBBAddMissingSkill.Enabled = false;
-            this.ButtonBBAddMissingSkill.Location = new System.Drawing.Point(546, 32);
-            this.ButtonBBAddMissingSkill.Name = "ButtonBBAddMissingSkill";
-            this.ButtonBBAddMissingSkill.Size = new System.Drawing.Size(75, 24);
-            this.ButtonBBAddMissingSkill.TabIndex = 18;
-            this.ButtonBBAddMissingSkill.Text = "Add";
-            this.ButtonBBAddMissingSkill.UseVisualStyleBackColor = true;
-            this.ButtonBBAddMissingSkill.Click += new System.EventHandler(this.ButtonBBAddMissingSkill_Click);
+            this.TabTree.Controls.Add(this.TreeViewMain);
+            this.TabTree.Location = new System.Drawing.Point(4, 24);
+            this.TabTree.Name = "TabTree";
+            this.TabTree.Padding = new System.Windows.Forms.Padding(3);
+            this.TabTree.Size = new System.Drawing.Size(839, 443);
+            this.TabTree.TabIndex = 4;
+            this.TabTree.Text = "Tree";
+            this.TabTree.UseVisualStyleBackColor = true;
+            // 
+            // TreeViewMain
+            // 
+            this.TreeViewMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TreeViewMain.Location = new System.Drawing.Point(3, 3);
+            this.TreeViewMain.Name = "TreeViewMain";
+            this.TreeViewMain.Size = new System.Drawing.Size(833, 437);
+            this.TreeViewMain.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -948,6 +971,7 @@ namespace BitBurnerSaveEditor
             ((System.ComponentModel.ISupportInitialize)(this.DgvBBSkills)).EndInit();
             this.TabRawView.ResumeLayout(false);
             this.TabRawView.PerformLayout();
+            this.TabTree.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1034,5 +1058,7 @@ namespace BitBurnerSaveEditor
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.ComboBox ComboBBKnownSkills;
         private System.Windows.Forms.Button ButtonBBAddMissingSkill;
+        private System.Windows.Forms.TabPage TabTree;
+        private System.Windows.Forms.TreeView TreeViewMain;
     }
 }
